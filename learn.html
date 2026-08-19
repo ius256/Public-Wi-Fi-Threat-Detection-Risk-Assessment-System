@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Learn — PWTDS{% endblock %}
+{% block content %}
+<section class="page-hero learn-hero">
+  <span class="pagetag"><svg viewBox="0 0 24 24"><path d="M5 5h11a2 2 0 0 1 2 2v12M5 5v14h13"/><path d="M9 9h4"/></svg> Learn</span>
+  <h1>Public Wi-Fi threats, in <span class="grad">plain English</span></h1>
+  <p>The eight tricks PWTDS looks for when it scans a network — and why each one matters for you.</p>
+  <div class="learn-art" aria-hidden="true">
+    <span class="f f1"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+    <span class="f f2"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="11" height="11" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2"/></svg></span>
+    <span class="f f3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg></span>
+    <span class="f f4"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+  </div>
+</section>
+<section class="section">
+  <div class="learn-grid">
+    {% for item in topics %}
+    <div class="learn-card">
+      <h3><span class="li">{{ item.icon | safe }}</span> {{ item.title }}</h3>
+      <p>{{ item.body }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

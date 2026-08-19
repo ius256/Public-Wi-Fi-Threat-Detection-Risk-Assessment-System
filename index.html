@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- scanner stage -->
+<section class="scanner" id="scanner">
+  <div class="radar" id="radar" aria-hidden="true">
+    <div class="r-ring r1"></div>
+    <div class="r-ring r2"></div>
+    <div class="r-ring r3"></div>
+    <div class="r-sweep"></div>
+    <span class="r-blip b1"></span>
+    <span class="r-blip b2"></span>
+    <span class="r-blip b3"></span>
+    <span class="r-blip b4"></span>
+    <div class="r-core">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M2 9.5a15 15 0 0 1 20 0"/><path d="M5 13a10 10 0 0 1 14 0"/>
+        <path d="M8.2 16.3a5 5 0 0 1 7.6 0"/><circle cx="12" cy="20" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+  </div>
+
+  <span class="eyebrow">Public Wi-Fi security check</span>
+  <h1 class="scan-h">Is this Wi-Fi <span class="grad">safe to use?</span></h1>
+  <p class="lede">PWTDS reads the network you're connected to and checks it for the tricks used to
+     steal data on public Wi-Fi — then tells you, in plain language, whether it's safe to browse,
+     log in, shop, or bank.</p>
+
+  <div class="hero-cta">
+    <button class="btn btn-lg btn-pulse" id="scanBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 9.5a15 15 0 0 1 20 0"/><path d="M6 13.5a9 9 0 0 1 12 0"/><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none"/></svg>
+      Scan this network
+    </button>
+  </div>
+  <span id="conn" class="scan-conn"></span>
+  <div class="radar-state"><i></i><b id="radarState">STANDBY — press scan</b></div>
+
+  <div class="scan-tags">
+    <span>Passive scan</span><span>9 checks</span><span>Runs locally</span><span>Nothing leaves your device</span>
+  </div>
+</section>
+
+<main class="wrap">
+  <div id="status"></div>
+
+  <section id="result">
+    <div class="demo-row exrow">
+      <button class="linkbtn" id="exToggle">
+        <span class="chev">▸</span> See an example threat report
+      </button>
+      <div class="exwrap" id="exwrap" hidden>
+        <p class="exnote">Sample reports so you can see what each detection looks like — these are examples, not your network.</p>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+
+    <div class="vbanner" id="vbanner">
+      <div class="vb-left">
+        <div class="shield" id="vshield"></div>
+        <div class="ringmeter" id="ringmeter">
+          <div class="rm-in"><b id="riskNum">0</b><span class="rm-label">risk / 100</span></div>
+        </div>
+        <div class="gradeMini" id="gradeMini">A</div>
+      </div>
+      <div class="vtext">
+        <span class="exbadge" id="exampleBadge" hidden>Example report · sample data</span>
+        <div class="vhead" id="vhead"></div>
+        <div class="vsub" id="vsub"></div>
+        <div class="vcover" id="vcover"></div>
+        <div class="metachips">
+          <span class="meta"><span class="k">Network</span><b id="netName">—</b></span>
+          <span class="meta"><span class="k">Mode</span><b id="modeName"></b></span>
+          <span class="meta"><span class="k">Platform</span><b id="bPlat">—</b></span>
+          <span class="meta"><span class="k">Started</span><b id="bStarted">—</b></span>
+        </div>
+      </div>
+      <div class="vb-side">
+        <span class="riskword" id="riskWord">—</span>
+        <button class="btn ghost" id="scanAgain">Scan again</button>
+      </div>
+    </div>
+
+    <div class="sectlabel"><span class="eyebrow">Your data</span><h2>What you can safely do here</h2><span class="secnum">01</span></div>
+    <div class="tasks" id="tasks"></div>
+
+    <div class="sectlabel"><span class="eyebrow">Plain english</span><h2>What we checked for you</h2><span class="secnum">02</span></div>
+    <div class="checks" id="checks"></div>
+
+    <div class="sectlabel"><span class="eyebrow">Final report</span><h2>Your plan for this network</h2><span class="secnum">03</span></div>
+    <div class="plan" id="plan">
+      <div class="plan-col plan-can">
+        <div class="plan-head"><span class="plan-ic">✓</span> You can safely</div>
+        <ul id="planCan"></ul>
+      </div>
+      <div class="plan-col plan-avoid">
+        <div class="plan-head"><span class="plan-ic">✕</span> Avoid or take care</div>
+        <ul id="planAvoid"></ul>
+      </div>
+    </div>
+
+    <div class="sectlabel"><span class="eyebrow">Habits</span><h2>Staying safe on public Wi-Fi</h2><span class="secnum">04</span></div>
+    <div class="tips" id="tips"><ul id="tipList"></ul></div>
+
+    <details class="tech" id="tech">
+      <summary>Technical details <small>— scores, dimensions &amp; evidence (for your report)</small></summary>
+      <div class="techbody">
+        <div class="hero">
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 210 132" width="210" height="132" aria-hidden="true">
+              <path d="M18 120 A87 87 0 0 1 192 120" fill="none" stroke="#1b2029" stroke-width="15" stroke-linecap="round"/>
+              <path id="gaugeArc" d="M18 120 A87 87 0 0 1 192 120" fill="none" stroke="#35d07f"
+                    stroke-width="15" stroke-linecap="round" pathLength="100"
+                    stroke-dasharray="0 100" style="transition:stroke-dasharray .9s cubic-bezier(.2,.8,.2,1), stroke .4s"/>
+            </svg>
+            <div class="readout"><b id="riskNum2">0</b><span>Risk / 100</span></div>
+          </div>
+          <div class="meta">
+            <div class="gradechip"><span class="g" id="gradeBox">A</span><span class="lbl">Overall grade</span></div>
+            <div class="verdict" id="verdict"></div>
+            <div class="facts">
+              <span><span class="k">Platform</span><b id="platName">—</b></span>
+              <span><span class="k">Started</span><b id="startedAt">—</b></span>
+            </div>
+            <div class="riskscale">
+              <div class="ticks"><span>0 · minimal</span><span>25</span><span>50</span><span>75</span><span>100 · critical</span></div>
+              <div class="scale" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid" id="dims"></div>
+        <div class="sectlabel"><span class="eyebrow">Airspace</span><h2>Access points observed</h2></div>
+        <div class="dim" style="padding:6px 10px"><table class="aptable" id="apTable"></table></div>
+      </div>
+    </details>
+  </section>
+</main>
+
+
+<!-- assistant -->
+<button class="asst-fab" id="asstFab" aria-label="Open assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="13" cy="10" r=".6" fill="currentColor"/><circle cx="17" cy="10" r=".6" fill="currentColor"/></svg>
+  <span>Ask</span>
+</button>
+<div class="asst" id="asst" hidden>
+  <div class="asst-head">
+    <div class="asst-ava" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+    </div>
+    <div class="asst-title"><span class="tt"><span class="asst-dot"></span> PWTDS Assistant</span><small>grounded in your scan · runs locally</small></div>
+    <div class="asst-tools">
+      <button class="asst-exp" id="asstExpand" aria-label="Expand chat" title="Expand to 60% of the screen">
+        <svg class="ic-max" viewBox="0 0 24 24"><path d="M9 5H5v4M15 5h4v4M9 19H5v-4M15 19h4v-4"/></svg>
+        <svg class="ic-min" viewBox="0 0 24 24"><path d="M9 5v4H5M15 5v4h4M9 19v-4H5M15 19v-4h4"/></svg>
+      </button>
+      <button class="asst-x" id="asstClose" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="asst-body" id="asstBody"></div>
+  <div class="asst-chips" id="asstChips"></div>
+  <form class="asst-input" id="asstForm">
+    <input id="asstText" type="text" autocomplete="off" placeholder="Ask about your scan…" />
+    <button type="submit" aria-label="Send">
+      <svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+    </button>
+  </form>
+</div>
+
+
+<!-- consent modal -->
+<div class="scrim" id="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+    <span class="eyebrow">Before a live scan</span>
+    <h3 id="cTitle">Lawful-use confirmation</h3>
+    <p>PWTDS performs a <b>passive, non-destructive</b> assessment. It only reads information your
+       operating system already exposes and makes ordinary DNS / HTTP requests. It does not attack,
+       intercept, crack, or access any network without permission.</p>
+    <ul>
+      <li>No deauthentication, key cracking, or packet injection</li>
+      <li>No credential capture — nothing personal is stored</li>
+      <li>Assess only networks you own or are authorised to test</li>
+    </ul>
+    <p style="color:var(--muted)">By continuing you confirm you are testing in line with applicable law.</p>
+    <div class="actions">
+      <button class="btn ghost" id="cCancel">Cancel</button>
+      <button class="btn" id="cAgree">I understand — scan</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script src="{{ url_for('static', filename='chatbot.js') }}"></script>
+{% endblock %}

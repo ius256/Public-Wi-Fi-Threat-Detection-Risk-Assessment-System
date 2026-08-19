@@ -1,0 +1,25 @@
+==========================================================================
+PWTDS - DETECTION VALIDATION
+Each case runs through the real scanners, scoring and advice pipeline.
+==========================================================================
+
+CASE         EXPECTED           ACTUAL         RESULT  DETECTORS FIRED
+--------------------------------------------------------------------------
+safe-cafe    A/B - safe         A - safe       PASS    (clean)
+evil-twin    C/D - avoid/caution C - avoid      PASS    SSID Legitimacy [High], Captive Portal Security [Medium]
+dns-hijack   D/F - avoid        F - avoid      PASS    Encryption Configuration [Critical], SSID Legitimacy [High], DNS Integrity [High], ARP Behaviour [Critical], Private Connections [High], Captive Portal Security [High]
+--------------------------------------------------------------------------
+
+
+- safe-cafe: A well-run cafe: WPA2, honest DNS, no interception.
+    risk 0.0/100, grade A, stance safe
+
+- evil-twin: A rogue access point cloning a real network's name.
+    risk 45.5/100, grade C, stance avoid
+
+- dns-hijack: A network silently redirecting your web lookups.
+    risk 83.3/100, grade F, stance avoid
+
+==========================================================================
+RESULT: all 3/3 cases behaved as specified.
+==========================================================================

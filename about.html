@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}About — PWTDS{% endblock %}
+{% block content %}
+<section class="page-hero about-hero">
+  <span class="pagetag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v5"/><circle cx="12" cy="16.5" r=".5" stroke="none" fill="currentColor"/></svg> About</span>
+  <h1>What PWTDS <span class="grad">really is</span></h1>
+  <p>A passive Wi-Fi security scanner that tells everyday people whether the network they're on is safe to browse, log in, shop, or bank on.</p>
+  <div class="about-art" aria-hidden="true">
+    <div class="aa-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <span></span><span></span><span></span>
+  </div>
+  <div class="stat-row">
+    <span class="stat"><i></i><b>Passive</b> reads only your own connection</span>
+    <span class="stat"><i></i><b>9 checks</b> run in seconds</span>
+    <span class="stat"><i></i><b>100% local</b> nothing is uploaded</span>
+  </div>
+</section>
+<section class="prose">
+  <h2>How it works</h2>
+  <p>You press <b>Scan this network</b>. PWTDS reads facts about the Wi-Fi you're connected to — its encryption, the DNS it hands out, the gateway, your device's exposure, and more — and runs nine checks. It then gives a plain verdict and a "what you can and can't do here" report.</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Connect</h3><p>Join the public Wi-Fi as normal — a café, campus, or free hotspot.</p></div>
+    <div class="step"><div class="num">2</div><h3>Scan</h3><p>One button runs the nine checks in seconds.</p></div>
+    <div class="step"><div class="num">3</div><h3>Understand</h3><p>Get a safe / careful / avoid verdict for real activities.</p></div>
+  </div>
+  <div class="pillar-grid">
+    <div class="pillar pillar-yes">
+      <div class="p-head"><span class="p-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 12l2 2 4-4"/></svg></span> What it does</div>
+      <ul>
+        <li>Reads facts your operating system already exposes</li>
+        <li>Checks the Wi-Fi you're connected to — and only yours</li>
+        <li>Runs ordinary DNS and HTTPS checks against public servers</li>
+        <li>Reports in plain language anyone can act on</li>
+      </ul>
+    </div>
+    <div class="pillar pillar-no">
+      <div class="p-head"><span class="p-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg></span> What it doesn't do</div>
+      <ul>
+        <li>No port scans or probing of other people's devices</li>
+        <li>No deauthentication, key cracking or packet injection</li>
+        <li>No credential capture — nothing personal is stored</li>
+        <li>No offensive testing of networks you don't own</li>
+      </ul>
+    </div>
+  </div>
+  <div class="focus-card fc-info">
+    <h2>Honest limits</h2>
+    <p>A green result means no problems were found by these checks — not an absolute guarantee. When a check can't be verified, PWTDS says "Can't tell" rather than assuming safe. The assistant explains results but the scan report itself is always the source of truth.</p>
+  </div>
+  <div class="focus-card fc-bot">
+    <h2>The assistant</h2>
+    <p>The "Ask" button opens a helper that explains your scan in plain language. With a free AI key (see the README) it becomes a full chatbot; without one it uses built-in answers. Either way it's grounded in your real scan and won't tell you something is safe that the scan flagged.</p>
+  </div>
+</section>
+{% endblock %}

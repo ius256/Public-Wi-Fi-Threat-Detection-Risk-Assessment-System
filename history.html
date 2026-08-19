@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}History — PWTDS{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <span class="pagetag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg> History</span>
+  <h1>Networks you've <span class="grad">scanned</span></h1>
+  <p>PWTDS remembers a fingerprint of each network so it can warn you if one changes since last time. This is that memory.</p>
+</section>
+{% set total = networks|length %}
+{% set open_n = networks|selectattr('open')|list|length %}
+{% set secure_n = total - open_n %}
+{% set last = networks[0].last_seen if networks else '—' %}
+<section class="hstats">
+  <div class="hstat hstat-blue"><span class="h-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20M9 16v4M15 16v4"/></svg></span><b data-count="{{ total }}">0</b><span class="h-lbl">networks remembered</span></div>
+  <div class="hstat hstat-green"><span class="h-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><b data-count="{{ secure_n }}">0</b><span class="h-lbl">protected when seen</span></div>
+  <div class="hstat hstat-red"><span class="h-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M12 9v4"/><circle cx="12" cy="16" r=".6" stroke="none" fill="currentColor"/></svg></span><b data-count="{{ open_n }}">0</b><span class="h-lbl">open / unsecured</span></div>
+  <div class="hstat hstat-amber"><span class="h-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg></span><b class="hsmall">{{ last }}</b><span class="h-lbl">last scan</span></div>
+</section>
+<section class="hist">
+  {% if networks %}
+  <table class="histtable">
+    <thead><tr><th>Network</th><th>Security</th><th>Router (gateway) MAC</th><th>DNS</th><th>First seen</th><th>Last seen</th></tr></thead>
+    <tbody>
+    {% for n in networks %}
+    <tr>
+      <td><span class="nname">{{ n.ssid }}</span></td>
+      <td><span class="pill-sec {{ 'bad' if n.open else 'ok' }}">{{ n.security or '—' }}</span></td>
+      <td class="mono">{{ n.gateway_mac or '—' }}</td>
+      <td class="mono">{{ n.dns or '—' }}</td>
+      <td class="mono">{{ n.first_seen or '—' }}</td>
+      <td class="mono">{{ n.last_seen or '—' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-page">
+    <div class="empty-ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg>
+      <span></span><span></span><span></span>
+    </div>
+    <h3>No history yet</h3>
+    <p>Run a scan on the Scan page and the network will be remembered here, so PWTDS can spot changes on your next visit.</p>
+    <a class="btn" href="{{ url_for('index') }}">Scan your first network</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+  var ns=document.querySelectorAll(".hstat b[data-count]");
+  if(!ns.length||!("IntersectionObserver" in window)) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(x){
+      if(!x.isIntersecting) return;
+      io.unobserve(x.target);
+      var el=x.target, target=parseInt(el.dataset.count||"0",10)||0;
+      var t0=performance.now(), dur=900;
+      (function step(t){
+        var p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+        el.textContent=Math.round(target*e);
+        if(p<1) requestAnimationFrame(step);
+      })(t0);
+    });
+  },{threshold:.5});
+  ns.forEach(function(n){ io.observe(n); });
+})();
+</script>
+{% endblock %}

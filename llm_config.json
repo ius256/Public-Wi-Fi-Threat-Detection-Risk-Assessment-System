@@ -1,0 +1,6 @@
+{
+  "HOW_TO_ENABLE_AI": "Paste your free API key on the api_key line, save, and restart the app. The tool auto-detects the provider from the key: a Groq key (starts with gsk_, from console.groq.com) OR a Google Gemini key (starts with AIza, from https://aistudio.google.com/apikey). If Groq is blocked on your network (Cloudflare error 1010), use a Gemini key instead - it does not go through Cloudflare.",
+  "api_key": "",
+  "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+  "model": "gemini-3.5-flash-lite"
+}
